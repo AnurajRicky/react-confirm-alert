@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { render, unmountComponentAtNode } from 'react-dom'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { render, unmountComponentAtNode } from "react-dom";
 
 export default class ReactConfirmAlert extends Component {
   static propTypes = {
@@ -10,136 +10,134 @@ export default class ReactConfirmAlert extends Component {
     childrenElement: PropTypes.func,
     customUI: PropTypes.func,
     willUnmount: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     buttons: [
       {
-        label: 'Cancel',
+        label: "Cancel",
         onClick: () => null
       },
       {
-        label: 'Confirm',
+        label: "Confirm",
         onClick: () => null
       }
     ],
     childrenElement: () => null,
     willUnmount: () => null
-  }
+  };
 
   handleClickButton = button => {
-    if (button.onClick) button.onClick()
-    this.close()
-  }
+    if (button.onClick) button.onClick();
+    this.close();
+  };
 
   close = () => {
-    removeBodyClass()
-    removeElementReconfirm()
-    removeSVGBlurReconfirm()
-  }
+    removeBodyClass();
+    removeElementReconfirm();
+    removeSVGBlurReconfirm();
+  };
 
   keyboardClose = event => {
     if (event.keyCode === 27) {
-      this.close()
+      this.close();
     }
-  }
+  };
 
   componentDidMount = () => {
-    document.addEventListener('keydown', this.keyboardClose, false)
-  }
+    document.addEventListener("keydown", this.keyboardClose, false);
+  };
 
   componentWillUnmount = () => {
-    document.removeEventListener('keydown', this.keyboardClose, false)
-    this.props.willUnmount()
-  }
+    document.removeEventListener("keydown", this.keyboardClose, false);
+    this.props.willUnmount();
+  };
 
   renderCustomUI = () => {
-    const { title, message, customUI } = this.props
+    const { title, message, customUI, buttons } = this.props;
     const dataCustomUI = {
       title,
       message,
+      buttons,
       onClose: this.close
-    }
+    };
 
-    return customUI(dataCustomUI)
-  }
+    return customUI(dataCustomUI);
+  };
 
-  render () {
-    const { title, message, buttons, childrenElement, customUI } = this.props
+  render() {
+    const { title, message, buttons, childrenElement, customUI } = this.props;
 
-    return (
-      <div className='react-confirm-alert-overlay'>
-        <div className='react-confirm-alert'>
-          {customUI
-            ? this.renderCustomUI()
-            : <div className='react-confirm-alert-body'>
-              {title && <h1>{title}</h1>}
-              {message}
-              {childrenElement()}
-              <div className='react-confirm-alert-button-group'>
-                {buttons.map((button, i) => (
-                  <button
-                    key={i}
-                    onClick={() => this.handleClickButton(button)}
-                  >
-                    {button.label}
-                  </button>
-                ))}
-              </div>
-            </div>}
+    return customUI ? (
+      this.renderCustomUI()
+    ) : (
+      <div className="react-confirm-alert-overlay">
+        <div className="react-confirm-alert">
+          <div className="react-confirm-alert-body">
+            {title && <h1>{title}</h1>}
+            {message}
+            {childrenElement()}
+            <div className="react-confirm-alert-button-group">
+              {buttons.map((button, i) => (
+                <button key={i} onClick={() => this.handleClickButton(button)}>
+                  {button.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-function createSVGBlurReconfirm () {
-  const svgNS = 'http://www.w3.org/2000/svg'
-  const feGaussianBlur = document.createElementNS(svgNS, 'feGaussianBlur')
-  feGaussianBlur.setAttribute('stdDeviation', '0.7')
+function createSVGBlurReconfirm() {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const feGaussianBlur = document.createElementNS(svgNS, "feGaussianBlur");
+  feGaussianBlur.setAttribute("stdDeviation", "0.7");
 
-  const filter = document.createElementNS(svgNS, 'filter')
-  filter.setAttribute('id', 'gaussian-blur')
-  filter.appendChild(feGaussianBlur)
+  const filter = document.createElementNS(svgNS, "filter");
+  filter.setAttribute("id", "gaussian-blur");
+  filter.appendChild(feGaussianBlur);
 
-  const svgElem = document.createElementNS(svgNS, 'svg')
-  svgElem.setAttribute('id', 'react-confirm-alert-firm-svg')
-  svgElem.setAttribute('class', 'react-confirm-alert-svg')
-  svgElem.appendChild(filter)
+  const svgElem = document.createElementNS(svgNS, "svg");
+  svgElem.setAttribute("id", "react-confirm-alert-firm-svg");
+  svgElem.setAttribute("class", "react-confirm-alert-svg");
+  svgElem.appendChild(filter);
 
-  document.body.appendChild(svgElem)
+  document.body.appendChild(svgElem);
 }
 
-function removeSVGBlurReconfirm () {
-  const svg = document.getElementById('react-confirm-alert-firm-svg')
-  svg.parentNode.removeChild(svg)
-  document.body.children[0].classList.remove('react-confirm-alert-blur')
+function removeSVGBlurReconfirm() {
+  const svg = document.getElementById("react-confirm-alert-firm-svg");
+  svg.parentNode.removeChild(svg);
+  document.body.children[0].classList.remove("react-confirm-alert-blur");
 }
 
-function createElementReconfirm (properties) {
-  document.body.children[0].classList.add('react-confirm-alert-blur')
-  const divTarget = document.createElement('div')
-  divTarget.id = 'react-confirm-alert'
-  document.body.appendChild(divTarget)
-  render(<ReactConfirmAlert {...properties} />, divTarget)
+function createElementReconfirm(properties) {
+  document.body.children[0].classList.add("react-confirm-alert-blur");
+  const divTarget = document.createElement("div");
+  divTarget.id = "react-confirm-alert";
+  document.body.appendChild(divTarget);
+  render(<ReactConfirmAlert {...properties} />, divTarget);
 }
 
-function removeElementReconfirm () {
-  const target = document.getElementById('react-confirm-alert')
-  unmountComponentAtNode(target)
-  target.parentNode.removeChild(target)
+function removeElementReconfirm() {
+  const target = document.getElementById("react-confirm-alert");
+  unmountComponentAtNode(target);
+  target.parentNode.removeChild(target);
 }
 
-function addBodyClass () {
-  document.body.classList.add('react-confirm-alert-body-element')
+function addBodyClass() {
+  document.body.classList.add("react-confirm-alert-body-element");
 }
 
-function removeBodyClass () {
-  document.body.classList.remove('react-confirm-alert-body-element')
+function removeBodyClass() {
+  document.body.classList.remove("react-confirm-alert-body-element");
 }
 
-export function confirmAlert (properties) {
-  addBodyClass()
-  createSVGBlurReconfirm()
-  createElementReconfirm(properties)
+export function confirmAlert(properties) {
+  addBodyClass();
+  createSVGBlurReconfirm();
+  createElementReconfirm(properties);
 }
