@@ -1,17 +1,13 @@
-# react-confirm-alert
+# react-custom-confirm-alert
 
-react component confirm dialog. [Live demo](https://ga-mo.github.io/react-confirm-alert/demo/)
-
-[![npm version](https://badge.fury.io/js/react-confirm-alert.svg)](https://badge.fury.io/js/react-confirm-alert)
-
-Document for v.1.x.x [see](https://github.com/GA-MO/react-confirm-alert/blob/master/Document-v1.md)
+[![npm version](https://badge.fury.io/js/react-custom-confirm-alert.svg)](https://badge.fury.io/js/react-custom-confirm-alert)
 
 ## Getting started
 
 #### Install with NPM:
 
 ```
-$ npm install react-confirm-alert --save
+$ npm install react-custom-confirm-alert --save
 ```
 
 #### Options
@@ -41,8 +37,8 @@ confirmAlert(options);
 #### Use with function:
 
 ```jsx
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { confirmAlert } from "react-custom-confirm-alert"; // Import
+import "react-custom-confirm-alert/src/react-custom-confirm-alert.css"; // Import css
 
 class App extends React.Component {
   submit = () => {
